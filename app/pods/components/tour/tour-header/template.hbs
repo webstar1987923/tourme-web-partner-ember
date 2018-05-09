@@ -1,0 +1,83 @@
+<div class="tour-header">
+  <div class="header-image" style={{background-image imageCover}}>
+    <div class="header-data">
+
+      <div class="header-image-mini" style={{background-image imageCover}}></div>
+
+      {{#if model.status}}
+        <div class="status-row {{if (eq model.status "approved") "b-color-success" "b-color-primary"}}">
+          <span>{{capitalize model.status}}</span>
+        </div>
+      {{/if}}
+      <div class="header-data-content">
+        <h1 class="margin-0">Tour</h1>
+        <h2 class="margin-0">{{model.name}}</h2>
+        <div class="layout-row margin-top-5">
+          <img class="lang-icon" src={{concat "/assets/icons/flags/" model.country ".png"}}/>
+          <h4 class="margin-0">{{countryName}}</h4>
+          <h4 class="margin-0">, {{model.cityName}}</h4>
+        </div>
+      </div>
+      {{!-- {{#paper-button class="edit" raised=true primary=true fab=true onClick=(action "showEditTour") }}{{paper-icon "mode-edit"}}{{/paper-button}} --}}
+      {{#paper-button class="edit button-icon-white" iconButton=true onClick=(action "showEditTour") }}{{paper-icon "mode-edit"}}{{/paper-button}}
+    </div>
+  </div>
+  <p>{{model.shortDesc}}</p>
+  {{#if showLongDescription}}
+    <p>{{model.longDesc}}</p>
+    {{#paper-button class="color-white margin-0" onClick=(action "hideLongDes")}}Show less {{paper-icon "keyboard-arrow-up" class="color-white" size=24}}{{/paper-button}}
+  {{else}}
+    {{#paper-button class="color-white margin-0" onClick=(action "showLongDes")}}Show more {{paper-icon "keyboard-arrow-down" class="color-white" size=24}}{{/paper-button}}
+  {{/if}}
+</div>
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "cancelEditTour") clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editTour") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit {{model.name}}</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "cancelEditTour")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-row">
+          <div class="layout-column flex-100">
+            {{form.input label="Name" required=true value=model.name onChange=(action (mut model.name))}}
+
+            {{paper-input textarea=true block=true label="Short Description" maxlength=150 passThru=(hash rows=2 maxRows=5)
+              value=model.shortDesc onChange=(action (mut model.shortDesc))}}
+
+            {{paper-input textarea=true block=true label="Long Description" passThru=(hash rows=4 maxRows=5)
+              value=model.longDesc onChange=(action (mut model.longDesc))}}
+
+            {{#paper-select
+              label="City"
+              options=cities
+              selected=model.city
+              onChange=(action "changeCity" city)
+              as |city|}}
+              {{#if city.city}}
+                {{get-city-name city}}
+              {{else}}
+                {{#each cities as |constCity|}}
+                  {{#if (eq constCity.city city)}}
+                    {{get-city-name constCity}}
+                  {{/if}}
+                {{/each}}
+              {{/if}}
+            {{/paper-select}}
+          </div>
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "cancelEditTour")}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

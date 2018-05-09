@@ -1,0 +1,105 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Vehicle{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    {{#if model.guideInfo.hasVehicle}}
+      <div class="layout-row flex margin-top-xs">
+        <div class="layout-column flex layout-align-center-start">
+          <h5>Car Make</h5>
+          <h4>{{model.guideInfo.vehicle.make }}</h4>
+        </div>
+        <div class="layout-column flex layout-align-center-start">
+          <h5>Car Model</h5>
+          <h4>{{model.guideInfo.vehicle.model}}</h4>
+        </div>
+        <div class="layout-column flex layout-align-center-start">
+          <h5>Car Model Year</h5>
+          <h4>{{model.guideInfo.vehicle.year }}</h4>
+        </div>
+      </div>
+
+      <div class="layout-column layout-gt-md-row margin-top-low">
+        {{#if model.guideInfo.vehicle.licence}}
+        <div class="layout-column flex-gt-md-25">
+          {{partials/image-modal image=model.guideInfo.vehicle.licence.url canDelete=false imTitle="License"}}
+        </div>
+        {{/if}}
+
+        {{#if model.guideInfo.vehicle.registration}}
+          <div class="layout-column flex-gt-md-25">
+            {{partials/image-modal image=model.guideInfo.vehicle.registration.url canDelete=false imTitle="Registration"}}
+          </div>
+        {{/if}}
+        {{#if model.guideInfo.vehicle.exterior}}
+          <div class="layout-column flex-gt-md-25">
+            {{partials/image-modal image=model.guideInfo.vehicle.exterior.url canDelete=false imTitle="Exterior"}}
+          </div>
+        {{/if}}
+        {{#if model.guideInfo.vehicle.interior}}
+          <div class="layout-column flex-gt-md-25">
+            {{partials/image-modal image=model.guideInfo.vehicle.interior.url canDelete=false imTitle="Interior"}}
+          </div>
+        {{/if}}
+      </div>
+
+    {{else}}
+      <h3>No Vehicle</h3>
+    {{/if}}
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editGuide") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-column margin-top-low">
+          {{#paper-switch value=model.guideInfo.hasVehicle onChange=(action (mut model.guideInfo.hasVehicle))}}
+            Has vehicle
+          {{/paper-switch}}
+          {{paper-input
+            label="Car Make"  
+            value=model.guideInfo.vehicle.make 
+            onChange=(action (mut model.guideInfo.vehicle.make))}}
+          
+          {{paper-input class="flex-30"
+            label="Car Model" 
+            value=model.guideInfo.vehicle.model  
+            onChange=(action (mut model.guideInfo.vehicle.model))}}
+
+          {{paper-input class="flex-30"
+            label="Car Model Year"  
+            value=model.guideInfo.vehicle.year 
+            onChange=(action (mut model.guideInfo.vehicle.year))}}
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+
+
+
+

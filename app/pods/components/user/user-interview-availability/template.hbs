@@ -1,0 +1,86 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Interview Availability{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-row flex">
+      {{#each weekdays as |wd|}}
+        <div class="{{if (not wd.available) 'week-day-disabled'}}">
+          {{#paper-button class="week-day" disabled=(not wd.available)}}
+            <h3>{{wd.short}}</h3>
+            <span>{{wd.n}}</span>
+          {{/paper-button}}
+        </div>
+      {{/each}}
+    </div>
+    <div class="layout-column flex-25 layout-align-center-start">
+      <h5 class="margin-top-low">Available Time</h5>
+      <h4>{{availableTime}}</h4>
+    </div>
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editAvailable") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-row">
+          <div class="layout-column flex-100">  
+            <h4>Days of the week available</h4>
+            <div class="layout-row flex">
+              {{#each weekdays as |wd|}}
+                <div class="{{if (not wd.available) 'week-day-disabled'}}">
+                  {{#paper-button class="week-day" onClick=(action "changeAvailableDay" wd)}}
+                    <h3>{{wd.short}}</h3>
+                    <span>{{wd.n}}</span>
+                  {{/paper-button}}
+                </div>
+              {{/each}}
+            </div>
+            <h4 class="margin-0 margin-top-low">Available Time</h4>
+            <div class="layout-row flex">
+              {{paper-time-picker
+                value=firstAvailableHour
+                required=true
+                class="layout-column flex layout-align-center-start z-i-100"
+                label='First Available Hour'
+                onChange=(action "setTime" "start")
+              }}
+              {{paper-time-picker
+                value=lastAvailableHour
+                required=true
+                class="layout-column flex layout-align-center-start z-i-100"
+                label='Last Available Hour'
+                onChange=(action "setTime" "end")
+              }}
+            </div>
+          </div>
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+

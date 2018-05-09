@@ -1,0 +1,82 @@
+{{#paper-card class=(if (not-eq model.guideInfo.approved 'pending') "margin-top-low") as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Interview{{/text.headline}}
+        </div>
+        {{#if cardStatusOpen}}
+          {{#if (eq interview.status "pending")}}
+            {{#paper-button primary=true raised=true onClick=(action "startInterview")}}Start Interview{{/paper-button}}
+          {{else}}
+            {{#paper-button warn=true raised=true onClick=(action "showEndInterview" true)}}End Interview{{/paper-button}}
+          {{/if}}
+        {{else}}
+          {{#if interViewDetails}}
+            {{#paper-button class="margin-0 width-fit" onClick=(action "showInterviewDetails" false)}}Hide Details {{paper-icon "keyboard-arrow-up" size=24}}{{/paper-button}}
+          {{else}}
+            {{#paper-button class="margin-0 width-fit" onClick=(action "showInterviewDetails" true)}}Show Details {{paper-icon "keyboard-arrow-down" size=24}}{{/paper-button}}
+          {{/if}}
+        {{/if}}
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    {{#if cardStatusOpen}}
+      <div class="layout-row flex">
+        <div class="layout-column flex layout-align-center-start">
+          <h5>Scheduled</h5>
+          <h4>{{scheduled}}</h4>
+        </div>
+        <div class="layout-column flex layout-align-center-start">
+          <h5>Method</h5>
+          <h4>{{if interview.method (capitalize interview.method) "-"}}</h4>
+        </div>
+        <div class="layout-column flex layout-align-center-start">
+          <h5>Method Id</h5>
+          <h4>{{if interview.methodId interview.methodId "-"}}</h4>
+        </div>
+      </div>
+      {{paper-input disabled=(not-eq interview.status "inProgress") class="margin-top-low" textarea=true block=true label="Comments" value=comment onChange=(action (mut comment))}}
+    {{else}}
+      <div class="layout-row layout-align-start-center">
+        <h4 class="margin-right-xs">Interviewed</h4>
+        <h4 class="margin-right-xs">{{endDateInterview}}</h4>
+        <h4 class="margin-right-xs">by</h4>
+        <h4>{{partials/table/interview-back-office value=interview.user}}</h4>
+      </div>
+      {{#if interViewDetails}}
+        <h4 class="margin-top-low">Comments</h4>
+        <h5 class="margin-top-xs">{{if comment comment "No comments"}}</h5>
+      {{/if}}
+    {{/if}}
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if modalEndInterview}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEndInterview" false) clickOutsideToClose=true}}
+    {{#paper-form as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Decision about the interview</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEndInterview" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+      {{#paper-dialog-content}}
+        <p>Is <span class="bold">{{model.firstName}}</span> approved to become an official TourMe guide? You may decide later if you're still not sure.</p>
+        <div class="layout-column layout-align-center-end">
+          <div class="layout-row flex layout-align-center-center width-100">
+            {{#paper-button raised=true warn=true onClick=(action "endInterview" 'rejected')}}Reject{{/paper-button}}
+            {{#paper-button raised=true primary=true onClick=(action "endInterview" 'approved')}}Approve{{/paper-button}}
+          </div>
+        </div>
+
+      {{/paper-dialog-content}}
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "endInterview")}}Decide Later{{/paper-button}} 
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

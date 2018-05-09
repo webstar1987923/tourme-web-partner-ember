@@ -1,0 +1,47 @@
+<div class="layout-row flex">
+  <div class="flex-75 layout-column layout-align-center-center">
+    <h2>BOOKING: {{capitalize model.btype}}</h2>
+    {{paper-divider}}
+    <h3>{{capitalize bookingName}}</h3>
+    <div class="layout-row">
+      <img class="lang-icon" src={{concat "/assets/icons/flags/" model.country ".png"}}/>
+      <h5 class="margin-0">{{countryName}}</h5>
+      <h5 class="margin-0">, {{model.cityName}}</h5>
+    </div>
+  </div>
+  <div class="flex-25 layout-row layout-align-end-start">
+    <div class="header-image text-center" style={{background-image bookingImage}}>
+      <span class="status {{if (eq model.status "finished") "b-color-success" "b-color-primary"}}">{{capitalize model.status}}</span>
+    </div>
+  </div>
+</div>
+{{#if model.attention}}
+
+  {{#paper-button raised=true warn=true onClick=(action "showConfirmSolved" true) }}Solved{{/paper-button}}
+  {{#if model.attentionReason}}
+    <h4>Attention Reason: {{model.attentionReason}}</h4>
+  {{/if}}
+{{/if}}
+{{#if model.cancellation}}
+  <h4 class="advice">Cancelled by {{capitalize model.cancellation.by}}. {{if model.cancellation.reason (concat "Reason: " model.cancellation.reason)}}</h4>
+{{/if}}
+
+{{#if alertSolved}}
+  {{#paper-dialog class="flex-50" onClose=(action "showConfirmSolved" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "solvedAttention") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Are you sure you have solved the problems? this action is irreversible.</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showConfirmSolved" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showConfirmSolved" false)}}No{{/paper-button}}
+        {{#form.submit-button primary=true}}Yes{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

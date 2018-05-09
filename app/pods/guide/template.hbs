@@ -1,0 +1,15 @@
+{{#paper-card class="layout-fill inner-body background-details"}}
+  {{guide/guide-header model=model cancel="cancel" save="save" sendMessage="sendMessage" saveSuccess=saveSuccess}}
+  {{#paper-card-content}}
+    {{#if (not-eq model.guideInfo.approved "pending")}}
+      {{guide/guide-actions model=model save="save"}}
+    {{/if}}
+    {{guide/guide-interview model=model interview=interview save="save" startInterview="startInterview" endInterview="endInterview" saveSuccess=saveSuccess}}
+    {{guide/guide-info model=model numBookings=numBookings numMessages=numMessages numTours=numTours cancel="cancel" save="save" saveSuccess=saveSuccess}}
+    {{guide/guide-personal-info model=model cancel="cancel" save="save" saveSuccess=saveSuccess guidePictures=guidePictures}}
+    {{guide/guide-languages model=model cancel="cancel" save="save" saveSuccess=saveSuccess}}
+    {{guide/guide-references model=model cancel="cancel" save="save" saveSuccess=saveSuccess}}
+    {{guide/guide-vehicle model=model cancel="cancel" save="save" saveSuccess=saveSuccess}}
+    {{guide/guide-additional model=model cancel="cancel" save="save" saveSuccess=saveSuccess}}
+  {{/paper-card-content}}
+{{/paper-card}}

@@ -1,0 +1,30 @@
+{{#paper-card as |card|}}
+  {{#if imTitle}}
+    {{#card.title as |title|}}
+      {{#title.text as |text|}}
+        {{#text.headline}}{{imTitle}}{{/text.headline}}
+      {{/title.text}}
+      {{#if canDelete}}
+        {{#paper-button iconButton=true disabled=isDisabled onClick=(action "deleteImage" imType)}}{{paper-icon "delete"}}{{/paper-button}}
+      {{/if}}
+    {{/card.title}}
+  {{/if}}
+  {{#card.content class="layout-row layout-align-space-between"}}
+    <div class="card-image" style={{background-image image}} {{action 'openImageModal' image title}}/>
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showModalImage}}
+  {{#paper-dialog class="flex-77" onClose=(action "closeDialog" "cancel") clickOutsideToClose=true}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>{{imName}}</h2>
+        <span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "closeDialog" "cancel")}}{{paper-icon icon="close"}}{{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+    {{#paper-dialog-content}}
+        <img style="margin: auto; max-width: 100%;" src={{modalImage}}>
+    {{/paper-dialog-content}}
+  {{/paper-dialog}}
+{{/if}}

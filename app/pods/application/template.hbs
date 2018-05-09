@@ -1,0 +1,49 @@
+<div id="container" class="body-container">
+  {{#if session.isAuthenticated}}
+    {{#paper-sidenav-container class="inner-sidenav height-100"}}
+      {{side-menu}}
+      {{#paper-card-content class="flex height-100"}}
+        <div class="height-100 layout-align-start-center layout-column" >
+          <div class="width-100">
+            {{#paper-toolbar  as |toolbar| }}
+              {{tool-bar actionChangePwd="changePwd" toProfile="toProfile" actionChangeProfilePic="changeProfilePic" saveSuccess=saveSuccess}}
+            {{/paper-toolbar}}
+          </div>
+          <div class='padding-body-content inner-body width-100'>                    
+            {{outlet}} 
+          </div>
+        </div>
+      {{/paper-card-content}}
+    {{/paper-sidenav-container}}
+  {{else}}
+      {{login-form loadingLogin=loadingLogin  actionNewUser="newUser" actionRecoverPwd="recoverPwd" saveSuccess=saveSuccess}}
+  {{/if}}  
+</div>
+
+{{#if showLoadingDialog}}
+  {{#paper-dialog class="layout-row layout-align-center-center dialog-transparent"}}  
+    {{paper-progress-circular class="margin-center" accent=true diameter=40}}
+  {{/paper-dialog}}
+{{/if}}
+
+<!--div id="container" class="body-container">
+  {{#paper-card as |card|}}
+    Hello {{model.firstName}}
+    {{#card.actions}}
+      {{#paper-button href=(href-to "guide" '59e466aaee217ad30bbf57c9') raised=true primary=true}}Guide{{/paper-button}}
+    {{/card.actions}}
+  {{/paper-card}}  
+  {{#paper-sidenav-container class="inner-sidenav height-100"}}
+    {{#paper-card-content class="flex height-100"}}
+      <div class="height-100 layout-align-start-center layout-column" >
+        <div class='padding-body-content inner-body width-100'>                          
+          {{outlet}} 
+        </div>
+      </div>
+    {{/paper-card-content}}
+  {{/paper-sidenav-container}}
+</div-->
+
+
+
+

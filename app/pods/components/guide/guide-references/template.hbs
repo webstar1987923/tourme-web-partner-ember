@@ -1,0 +1,102 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}References{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <h4>Questions</h4>
+    <div class="layout-row flex margin-top-xs">
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Convicted</h5>
+        <h4>{{if model.guideInfo.questions.convicted "Yes" "No"}}</h4>
+      </div>
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Arrested</h5>
+        <h4>{{if model.guideInfo.questions.arrested "Yes" "No"}}</h4>
+      </div>
+    </div>
+
+    <div class="margin-top-low"></div>
+    {{#each model.guideInfo.references as |reference index|}}
+      <h4>Reference {{inc index}}</h4>
+      {{#paper-item class="md-3-line"}}
+        {{paper-icon "tag-faces" class="md-avatar-icon"}}
+        <div class="md-list-item-text">
+          <h3>Name:&nbsp;<span class="bold">{{capitalize reference.firstName}} {{capitalize reference.lastName}}</span></h3>
+          <h3>Phone:&nbsp;<span class="bold">{{phone-format reference.phone}}</span></h3>
+          <h3>Email:&nbsp;<span class="bold">{{reference.email}}</span></h3>
+        </div>
+      {{/paper-item}}
+    {{/each}}
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editGuide") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <h4>Questions</h4>
+        <div class="layout-row">
+          {{#paper-checkbox value=model.guideInfo.questions.convicted onChange=(action (mut model.guideInfo.questions.convicted))}}
+           Convicted
+          {{/paper-checkbox}}
+
+          {{#paper-checkbox class="margin-left-low" value=model.guideInfo.questions.arrested onChange=(action (mut model.guideInfo.questions.arrested))}}
+           Arrested
+          {{/paper-checkbox}}
+        </div>
+
+        {{#each model.guideInfo.references as |reference index|}}
+          <h4>Reference {{inc index}}</h4>
+          <div class="layout layout-sm-column">
+            {{paper-input class="flex-25"
+              label="First Name"  
+              value=reference.firstName 
+              onChange=(action (mut reference.firstName))}}
+            
+            {{paper-input class="flex-25" 
+              label="Last Name" 
+              value=reference.lastName 
+              onChange=(action (mut reference.lastName))}}
+
+            {{paper-input class="flex-25"
+              label="Mobile Phone"  
+              icon="phone"
+              value=reference.phone 
+              onChange=(action (mut reference.phone))}}
+            
+            {{paper-input type="email" customValidations=emailValidation class="flex-25"
+              label="Email"
+              icon="email"
+              value=reference.email 
+              onChange=(action (mut reference.email))}}
+          </div>
+        {{/each}}
+        
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+

@@ -1,0 +1,21 @@
+{{#paper-card class="margin-0 margin-top-xs" as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      {{#text.headline}}Payment{{/text.headline}}
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-row flex">
+      <div class="layout-row flex layout-align-center-center">
+        Cost:&nbsp;<span class="bold">{{amount.text}}</span>
+      </div> 
+      <div class="layout-row flex layout-align-center-center">
+        Credit Card:&nbsp;<span class="bold">{{if model.creditCard (concat "..." model.creditCard.endsIn) "-"}}</span>
+      </div>
+      <div class="layout-row flex layout-align-center-center">
+        {{!-- {{#paper-button disabled=(not-eq model.status "finished") raised=true primary=true onClick=(action "returnMoney") }}Return Money{{/paper-button}} --}}
+        {{#paper-button disabled=true raised=true primary=true onClick=(action "returnMoney") }}Return Money{{/paper-button}}
+      </div>
+    </div>
+  {{/card.content}}
+{{/paper-card}}

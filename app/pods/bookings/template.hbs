@@ -1,0 +1,76 @@
+{{#paper-card class="layout-fill inner-body"}}
+{{#paper-card-content}}
+  <div class="width-100">
+    <div class="layout layout-row layout-align-start-center">
+      <h1 class="margin-0">{{paper-icon "bookmark-border" size=36}} Bookings ({{capitalize selectedStatus}})</h1>
+      {{#if gid}}
+        <div class="layout-row layout-align-start-center margin-left-low">
+          <h3> Guide:&nbsp;&nbsp;</h3>{{a2/a2-chip action="removeGuide" name=selectedGid.firstName picture=selectedGid.pic}}
+        </div>
+      {{/if}}
+      {{#if tid}}
+        <div class="layout-row layout-align-start-center margin-left-low">
+          <h3> Tourist:&nbsp;&nbsp;</h3>{{a2/a2-chip action="removeTourist" name=selectedTid.firstName picture=selectedTid.pic}}
+        </div>
+      {{/if}}      
+      {{#if ttid}}
+        <div class="layout-row layout-align-start-center margin-left-low">
+          <h3> Tour:&nbsp;&nbsp;</h3>{{a2/a2-chip action="removeTour" name=selectedTour.name picture=selectedTour.pic}}
+        </div>
+      {{/if}}         
+    </div>      
+    <br>
+    <div class="layout-row select-stat  layout-align-space-between-center">
+      {{#paper-radio-group class="layout-row  flex-60 "
+        groupValue=selectedStatus
+        onChange=(action "statusChange") as |group|}}        
+        {{#each bookingStatusList as |status|}}
+           {{#group.radio value=status }} {{capitalize status}}{{/group.radio}}
+        {{/each}}
+      {{/paper-radio-group}}
+
+      {{!--paper-input class="margin-0 flex-30" label="Search" value=searchValue onChange=(action (mut searchValue)) icon="search"--}}
+    </div>
+
+    {{#light-table  table height='75vh'  as |t|}}
+
+      {{t.head
+        onColumnClick=(action 'onColumnClick')
+        iconSortable='fa fa-sort'
+        iconAscending='fa fa-sort-asc'
+        iconDescending='fa fa-sort-desc'
+        fixed=true
+      }}
+
+      {{#t.body 
+        onRowClick=(action 'onRowClick')
+        canExpand=false
+        canSelect=true
+        onScrolledToBottom=(action 'onScrolledToBottom')    
+        as |body|
+      }}
+        {{#body.expanded-row as |row|}}
+          Hello <b>{{!--row.firstName--}}</b>
+        {{/body.expanded-row}}
+
+        {{#if isLoading}}
+          {{#body.loader}}
+            {{paper-progress-linear warn=true}}
+          {{/body.loader}}
+        {{/if}}
+
+        {{#if table.isEmpty}}
+          {{#body.no-data}}
+            No Bookings found.
+          {{/body.no-data}}
+        {{/if}}
+      {{/t.body}}
+
+      {{!--t.foot--}}
+
+    {{/light-table}}
+
+
+  </div>
+{{/paper-card-content}}
+{{/paper-card}}

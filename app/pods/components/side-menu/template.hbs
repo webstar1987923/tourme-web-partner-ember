@@ -1,0 +1,67 @@
+
+{{#paper-sidenav
+    class="md-whiteframe-z2 height-100"
+    name="left2"
+    open=false
+    lockedOpen=true
+    }}
+    <div class="header-menu">
+      {{#paper-toolbar class="header-menu" tall=true  href=(href-to "index")}}
+      {{/paper-toolbar}}
+    </div>
+
+    
+  {{#paper-content padding=false}}
+    {{#paper-list}}
+      
+        {{#paper-item }}
+          {{paper-icon "dashboard"}}
+          <p>DashBoard</p>
+        {{/paper-item}}
+
+        {{!--#paper-item  href=(href-to "tours")}}
+          {{paper-icon "message"}}
+          <p>Messages </p>
+        {{/paper-item}}   
+
+        {{#paper-item href=(href-to "tours")}}
+          {{paper-icon "star-rate"}}
+          <p>Reviews</p>
+        {{/paper-item}}
+
+        {{paper-divider}}
+          {{#paper-item href=(href-to "tours")}}
+          {{paper-icon "perm-identity"}}
+          <p>Guides</p>
+        {{/paper-item--}}
+
+        {{#paper-item href=(href-to "tours")}}
+          {{paper-icon "airport-shuttle"}}
+          <p>Tours</p>
+        {{/paper-item}}          
+        {{#paper-item href=(href-to "bookings")}}
+          {{paper-icon "bookmark-border"}}
+          <p>Bookings</p>
+        {{/paper-item}}  
+        {{paper-divider}} 
+        {{#paper-item }}
+          {{paper-icon "account-balance-wallet"}}
+          <p>Accounting</p>
+        {{/paper-item}}          
+        {{!--paper-divider}}
+        {{!--paper-divider}}
+        {{#paper-item href=(href-to "tours")}}
+          {{paper-icon "hot-tub"}}
+          <p>Tourists</p>
+        {{/paper-item}}          
+        {{#paper-item href=(href-to "tours")}}
+          {{paper-icon "bookmark-border"}}
+          <p>Bookings</p>
+        {{/paper-item}}   
+        {{paper-divider--}}
+
+    {{/paper-list}}       
+  {{/paper-content}}
+
+{{/paper-sidenav}}
+

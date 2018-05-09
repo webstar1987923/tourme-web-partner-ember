@@ -1,0 +1,131 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Information{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-row flex">
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Lang</h5>
+        <div class="layout-row">
+          {{#each appConstants.languages as |cl|}}
+            {{#if (eq cl.iso model.lang)}}
+              <img class="lang-icon" src={{concat "/assets/icons/flags/" cl.flag ".png"}}/>
+              <h4 class="lang-name">{{t (concat "l_" cl.iso)}}</h4>
+            {{/if}}
+          {{/each}}
+        </div>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Timezone</h5>
+        <h4>{{model.backInfo.timezone}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Phone</h5>
+        <h4>{{paper-icon "phone" size=18}} {{phone-format model.phone}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Email</h5>
+        <h4>{{paper-icon "mail" size=18}} {{model.email.login}}</h4>
+      </div>
+    </div>
+
+    <div class="layout-row flex margin-top-low">
+      <div class="layout-row flex layout-align-start-end">
+        {{#if model.guideInfo}}
+          <div class="layout-row flex">
+            <div class="layout-column layout-align-center-center">
+              <h4 class="margin-0 color-primary">This user is also a guide</h4>
+            </div>
+            <div class="layout-column layout-align-center-center">
+              {{#link-to "guide" model.id}}
+                {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+              {{/link-to}} 
+            </div>
+          </div>
+        {{/if}}
+        {{#if model.complete.tourist}}
+          <div class="layout-row flex">
+            <div class="layout-column layout-align-center-center">
+              <h4 class="margin-0 color-primary">This user is also a tourist</h4>
+            </div>
+            <div class="layout-column layout-align-center-center">
+              {{#link-to "tourist" model.id}}
+                {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+              {{/link-to}} 
+            </div>
+          </div>
+        {{/if}}
+      </div>
+      <div class="layout-row flex layout-align-end-end">
+        <a href="{{concat "/messages?uid=" model.id}}" class="layout-align-start-center margin-left-xs">{{numMessages}} Messages</a>
+      </div>
+    </div>
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editUser") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-row">
+          <div class="layout-column flex-100">
+            {{paper-input label="E-mail"  disabled=isDisabled icon="email" type="email" value=model.email.login onChange=(action (mut model.email.login))}}
+            {{paper-input label="Phone Number" type="text" value=model.phone onChange=(action (mut model.phone)) icon="phone"}}
+            
+            {{#paper-select
+              label="Select Language..."
+              class="flex"
+              options=appConstants.languages
+              selected=model.lang
+              onChange=(action 'updateLang')
+              as |langN|}}
+              {{#each appConstants.languages as |cl|}}
+                {{#if (or (eq cl.iso langN) (eq cl.iso langN.iso))}}
+                  <img class="lang-icon" src={{concat "/assets/icons/flags/" cl.flag ".png"}}/>
+                {{/if}}
+              {{/each}}
+
+              <span class="lang-name">{{t (concat "l_" (if langN.iso langN.iso langN))}}</span>
+            {{/paper-select}}
+
+            {{#paper-select  
+              class="flex"
+              label="Timezone"
+              options=appConstants.timezones
+              required=true
+              selected=model.backInfo.timezone
+              onChange=(action (mut model.backInfo.timezone))
+              as |tz|}}
+              {{tz}}
+            {{/paper-select}}    
+
+          </div>
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+

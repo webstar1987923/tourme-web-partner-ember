@@ -1,0 +1,435 @@
+@import 'tourme_icons'
+@import 'colors.sass'
+@import 'responsive.sass'
+@import 'ember-paper'
+@import 'paper-data-table'
+@import 'ember-paper-stepper'
+
+//@import 'ember-side-menu'
+//@import "ember-paper-tabs"
+
+body
+  //font-family: 'Roboto'
+  background-color: 'white'
+
+.body-container
+    min-height: 100vh
+    overflow: auto
+.login-form
+    height: 100vh
+.max-width-login
+    max-width: 400px !important
+
+.login-form:before //textura de puntos
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1)
+  //   background: url("/assets/images/point.png"); //textura de puntos
+  width: 100%
+  height: 100% /*height of the image*/
+
+.login-form
+  // background-image: linear-gradient(120deg, #f59d97 0%, #f54337 100%)
+  background: url("/assets/images/login-background.jpg") no-repeat fixed center
+  background-size: cover
+  md-card
+    background-color: rgba(255, 255, 255, 0.95) !important
+    z-index: 0
+  img
+    width: 50%
+  .title
+    height: 100px
+    background-color: $primary-color !important
+    background: url('/assets/images/logo.png') no-repeat center
+    background-size: 30%
+  .inputLogin
+    margin: 0
+    margin-top: 15px
+  input:-webkit-autofill
+      -webkit-box-shadow: 0 0 0 30px white inset
+  .btn-login
+    width: 80%      
+
+  #forgotPassword
+      text-transform: inherit
+      color: $textDark
+      margin: 5px
+      font-size: 12px
+
+// .padding-body-content
+//   padding-top: 64px
+.padding-low
+  padding: 1em
+.padding-bottom-0
+  padding-bottom: 0 !important
+.height-100
+    height: 100%
+.height-button
+  height: 20px
+.width-100
+  width: 100%
+.width-fit
+  width: fit-content !important
+.min-width-dialog
+    min-width: 350px
+.inline-block
+    display: inline-block !important
+.margin-right-0
+  margin-right: 0 !important
+.margin-right-low
+    margin-right: 2em !important
+.margin-right-xs
+    margin-right: 1em !important
+.margin-left-0
+  margin-left: 0 !important
+.margin-left-low
+    margin-left: 2em !important
+.margin-left-xs
+    margin-left: 1em !important
+.margin-top-5
+  margin-top: 5px !important
+.margin-0
+  margin: 0 !important
+.margin-top-low
+    margin-top: 2em !important
+.margin-top-xs
+    margin-top: 1em !important
+.padding-0
+  padding: 0 !important
+.text-center
+    text-align: center
+.position-relative
+    position: relative !important
+.position-fixed
+    position: fixed !important
+.inner-body
+  // padding-top: 20px
+  height: 100%
+  overflow: auto
+.b-color-primary
+  background-color: $primary-color !important
+.b-color-success
+  background-color: $success-color !important
+
+.inner-sidenav 
+  background-color: #F2F2F2
+  height: 100vh
+
+.color-text
+  color: $text
+.color-black
+  color: black !important
+.md-avatar-icon
+  background-color: $text
+  color: white !important
+
+.img-circle 
+    border-radius: 50%
+.user-avatar
+    border-radius: 50%
+    border: 1px solid #ccc
+    background: url('/assets/images/usericon.png') no-repeat center;
+    background-size: 100%
+.img-user-default
+  background: url('/assets/images/usericon.png') no-repeat center;
+  background-size: 100%
+.row-toggle 
+  color: $accent-color
+  cursor: pointer
+  &:hover, &:active, &:focus 
+    color: darken($accent-color, 5%)
+  
+.card-image
+  height: 200px
+  width: 100%
+  border: 1px solid #dadada
+  cursor: pointer
+
+.z-i-1
+  z-index: 1 !important
+.z-i-100
+  z-index: 100 !important
+
+.lang-container
+  width: 150px
+.lang-name
+  vertical-align: middle
+.v-middle
+  vertical-align: middle
+.lang-icon
+  width: 20px
+  height: 20px
+  vertical-align: middle
+  margin-right: 5px
+.cursor-pointer
+  cursor: pointer
+.button-border
+  background-color: transparent !important
+  color: $primary-color !important
+  border: 1px solid $primary-color
+  height: 46px
+  border-radius: 4px
+.toolbar-shadow
+  box-shadow: 0 4px 6px -3px rgba(0, 0, 0, 0.4)
+  
+.dialog-transparent
+  background-color: transparent !important
+  box-shadow: none !important
+.md-dialog-backdrop
+  background-color: #E0E0E0 !important
+
+.actions-fixed
+  position: fixed
+  right: 5px
+  top: 75px
+  z-index: 10
+
+.tour-header
+  padding: 15px
+  background-color: $textDark
+  p
+    color: $white
+  .status-row
+    min-width: 100px
+    position: absolute
+    top: 75px
+    text-align: center
+    background-color: $primary-color
+    border-radius: 4px
+    padding: 2px
+      
+.header-image
+  height: 300px
+  overflow: hidden
+  position: relative
+.header-data
+  position: absolute
+  bottom: 0
+  background: rgba(0, 0, 0, 0.32)
+  background: -webkit-linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8))
+  background: -o-linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8))
+  background: -moz-linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8))
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8))
+  width: 100%
+  min-height: 80px
+  color: white
+  padding: 15px
+  .edit
+    position: absolute
+    right: 30px
+    bottom: 5px
+.header-image-mini
+  width: 100px
+  height: 100px
+  display: inline-block
+  top: -50px
+  position: absolute
+  border: 2px solid white
+  border-radius: 4px
+.header-image-circle
+  width: 100px
+  height: 100px
+  display: inline-block
+  top: -50px
+  position: absolute
+.header-data-content
+  margin-left: 130px
+
+.color-white
+  color: $white !important
+.color-primary
+  color: $primary-color
+.button-icon-white
+  md-icon
+    color: $white !important
+.background-details
+  background-color: $background-gray
+  
+.tour-info
+  background-color: white !important
+  h4, h5
+    margin: 0
+  h4
+    span
+      color: $text
+  h5
+    color: $text
+    margin-bottom: 5px
+  .title
+    color: $textDark
+.content-edit-dialog
+  md-select
+    width: 100%
+
+.input-label
+  color: rgba(0, 0, 0, 0.54)
+  padding-left: 3px
+  padding-right: 0
+  font-family: Roboto, "Helvetica Neue", sans-serif
+  font-weight: 400
+  font-size: 13px
+
+.alert-toast
+  .md-toast-content
+    background-color: $primary-color !important
+
+.user-rating
+  img
+    width: 80px
+    height: 80px
+    border-radius: 40px
+    border: 1px solid #ccc
+  h2,h3
+    margin: 0
+    color: $textDark
+  h3
+    color: $text
+    margin-top: 1px
+.divider
+  position: relative
+  margin: 10px 0 10px 0
+  h3
+    line-height: 33px
+    top: -20px
+    width: 40px
+    height: 40px
+    box-sizing: border-box
+    vertical-align: middle
+    border-radius: 20px
+    background-color: #dedede
+    display: inline-block
+    text-align: center
+    border: 3px solid white
+    margin: auto
+    position: absolute
+    top: 0; left: 0; bottom: 0; right: 0
+.review-tour-picture
+  width: 100px
+  height: 100px
+  box-sizing: border-box
+  border: 2px solid #e6e6e6
+  border-radius: 4px
+.booking-header
+  h2,h3
+    color: $textDark
+  .header-image
+    height: 200px
+    box-sizing: border-box
+    width: 180px
+    margin-right: 25px
+    border: 2px solid $background-gray
+  md-divider
+    width: 90%
+    border-width: 2px
+    border-color: $text
+  .status
+    width: 100%
+    position: absolute
+    padding: 2px
+    bottom: 0
+    left: 0
+    text-align: center
+    color: white
+  .advice
+    background-color: rgba(245, 67, 55, 0.8)
+    padding: 10px
+    color: white
+.table-info
+  table
+    border-collapse: collapse
+    width: 100%
+    color: $textDark
+  th, td
+    text-align: left
+    padding: 8px
+    border: 1px solid #d4d4d4
+  tr:nth-of-type(odd)
+    background-color: #f2f2f2
+  th
+    background-color: #4CAF50
+    color: white
+  .td-title
+    font-weight: bold
+.bold
+  font-weight: bold
+.credit-cards
+  h3
+    span
+      font-weight: bold
+  .md-3-line
+    height: auto
+    min-height: 100px
+.admin-menu
+  margin: 0
+  padding: 1em
+.input-capitalize
+  input
+    text-transform: capitalize
+
+.week-day
+  text-align: center
+  width: 80px
+  height: 80px
+  margin: 5px
+  border: 1px solid $text
+  border-radius: 4px
+  padding: 5px
+  position: relative
+  min-width: initial
+  line-height: initial
+  span
+    line-height: initial
+    font-size: 12px
+    position: absolute
+    bottom: 0
+    left: 0
+    right: 0
+    padding: 5px
+    background-color: $primary-color
+    color: white
+    border-bottom-left-radius: 4px
+    border-bottom-right-radius: 4px
+  h3
+    margin: 0
+    position: absolute
+    top: 20px
+    left: 0
+    right: 0
+    color: $textDark
+.week-day-disabled
+  opacity: 0.5
+  span
+    background-color: gray
+.btn-change-profile-picture
+  height: 150px
+  width: 150px
+  padding: 0
+  line-height: initial
+  border-radius: 75px
+  .user-avatar
+    border: 4px solid #f1f1f1
+    height: 100%
+    width: 100%
+    box-sizing: border-box
+.btn-change-profile-mini
+  top: -45px
+  right: -45px
+  pointer-events: none
+.input-file
+  cursor: pointer
+  position: absolute
+  top: 0
+  right: 0
+  width: 100%
+  height: 100%
+  opacity: 0
+.add-tour
+  height: 610px
+  
+@import 'components.sass'
+@import 'a2-chip'

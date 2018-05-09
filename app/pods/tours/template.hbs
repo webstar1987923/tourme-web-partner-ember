@@ -1,0 +1,98 @@
+{{#paper-card class="layout-fill inner-body"}}
+{{#paper-card-content}}
+  <div class="width-100">
+    <div class="layout layout-row layout-align-start-center">
+      <h1 class="margin-0">{{paper-icon "airport-shuttle" size=36}} Tours ({{capitalize selectedStatus}})</h1>
+      {{#if gid}}
+        <div class="layout-row layout-align-start-center margin-left-low">
+          <h3> Guide:&nbsp;&nbsp;</h3>{{a2/a2-chip action="removeGuide" name=selectedGid.firstName picture=selectedGid.pic}}
+        </div>
+      {{/if}}
+    </div>
+    <br>
+    <div class="layout-row select-stat  layout-align-space-between-center">
+      {{#paper-radio-group class="layout-row  flex-60 "
+        groupValue=selectedStatus
+        onChange=(action "statusChange") as |group|}}
+        {{#each tourStatusList as |status|}}
+           {{#group.radio value=status }} {{capitalize status}}{{/group.radio}}
+        {{/each}}
+      {{/paper-radio-group}}
+      {{#paper-button raised=true primary=true onClick=(action "addTour" true) }}Add Tour{{/paper-button}}
+
+      {{!--paper-input class="margin-0 flex-30" label="Search" value=searchValue onChange=(action (mut searchValue)) icon="search"--}}
+    </div>
+
+    {{#light-table  table height='70vh'  as |t|}}
+
+      {{t.head
+        onColumnClick=(action 'onColumnClick')
+        iconSortable='fa fa-sort'
+        iconAscending='fa fa-sort-asc'
+        iconDescending='fa fa-sort-desc'
+        fixed=true
+      }}
+
+      {{#t.body
+        onRowClick=(action 'onRowClick')
+        canExpand=false
+        canSelect=true
+        onScrolledToBottom=(action 'onScrolledToBottom')
+        as |body|
+      }}
+        {{#body.expanded-row as |row|}}
+          Hello <b>{{!--row.firstName--}}</b>
+        {{/body.expanded-row}}
+
+        {{#if isLoading}}
+          {{#body.loader}}
+            {{paper-progress-linear warn=true}}
+          {{/body.loader}}
+        {{/if}}
+
+        {{#if table.isEmpty}}
+          {{#body.no-data}}
+            No Tours found.
+          {{/body.no-data}}
+        {{/if}}
+      {{/t.body}}
+
+      {{!--t.foot--}}
+
+    {{/light-table}}
+
+
+  </div>
+{{/paper-card-content}}
+{{/paper-card}}
+
+{{#if showTourDialog}}
+  {{#paper-dialog class="flex-80" onClose=(action (toggle this "showTourDialog")) clickOutsideToClose=true}}
+    {{!-- #paper-form onSubmit=(action "saveNewTour") as |form| --}}
+
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>New Tour</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action (toggle this "showTourDialog"))}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-row">
+          <div class="layout-column flex-100">
+            {{tour/add-tour model=tour  resetModal="resetModal"}}
+          </div>
+        </div>
+      {{/paper-dialog-content}}
+
+      {{!-- #paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action (toggle this "showTourDialog"))}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions--}}
+
+    {{!-- /paper-form--}}
+
+  {{/paper-dialog}}
+{{/if}}

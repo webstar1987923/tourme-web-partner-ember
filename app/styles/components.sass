@@ -1,0 +1,82 @@
+.stars
+  md-icon.md-default-theme
+    color: orange 
+
+.side-menu
+    z-index: 100;
+#side-menu
+    position: relative;
+    background-color: red;
+.header-menu
+    overflow: auto;
+    position: relative;
+    background: url('/assets/images/logo.png') no-repeat center;
+    background-size: 40%;
+.nav-photo
+  height: 40px
+  vertical-align: middle
+.nav-text
+  height: 40px
+  vertical-align: middle
+.select-stat
+  width: 95%;
+  padding: 10px;
+  margin: 0 auto;
+.ember-light-table
+  height: inherit;
+  width: 95%;
+  padding: 10px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333; 
+  background-color: white; 
+
+  .multi-select 
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  
+  .lt-row 
+    height: 46px
+    &.is-selected 
+      background-color: #DEDEDE
+    &:not(.is-selected):hover 
+      background-color: #F5F4F4    
+    &:last-of-type 
+      td 
+        border-bottom-width: 0
+    &.lt-expanded-row, &.lt-no-data 
+      &:hover 
+        background-color: transparent
+      td 
+        background-color: #f9f9f9
+        padding: 15px
+    &.colored-row 
+      color: white;
+      &:hover 
+        opacity: 0.8;      
+    td 
+      border-color: $border-color
+      border-width: 0
+      border-bottom-width: 1px
+      border-style: solid
+      font-size: 13px
+      padding: 0px 4px
+  th
+    padding: 0px 4px  
+
+
+
+
+thead 
+    border-bottom: 1px solid $principal-color;
+    padding: 15px
+
+
+
+

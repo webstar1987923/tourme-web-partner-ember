@@ -1,0 +1,30 @@
+{{#paper-dialog class="flex-50" onClose=(action "closeMessageModal") clickOutsideToClose=true}}
+  {{#paper-form onSubmit=(action "sendNewMessage") as |form|}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>New Message</h2>
+        <span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "closeMessageModal")}}{{paper-icon icon="close"}}{{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+
+    {{#paper-dialog-content}}
+      <div class="layout-row">
+          <div class="layout-column flex-100">
+            {{form.input label="Subject" value=messageTitle onChange=(action (mut messageTitle))}}
+            {{form.input
+                textarea=true
+                passThru=(hash rows=2 maxRows=2)
+                errorMessages=(hash required="Required")
+                label="Message" value=messageBody onChange=(action (mut messageBody)) required=true}}
+          </div>
+      </div>
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class="layout-row"}}
+      <span class="flex"></span>
+      {{#paper-button onClick=(action "closeMessageModal")}}Cancel{{/paper-button}}
+      {{#form.submit-button primary=true}}Send{{/form.submit-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-form}}
+{{/paper-dialog}}

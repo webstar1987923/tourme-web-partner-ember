@@ -1,0 +1,45 @@
+{{#if model.tour}}
+ {{!--  <div class="layout-row layout-xs-column">
+    <div class="layout-column flex-xs flex-gt-xs-50"> --}}
+      {{#paper-card class="margin-left-0 margin-right-0 margin-top-xs" as |card|}}
+        {{#card.title as |title|}}
+          {{#title.text as |text|}}
+            <div class="layout-row flex">
+              <div class="layout-column flex">
+                {{#text.headline}}Tour{{/text.headline}}
+              </div>
+              <div class="layout-column flex-20 layout-align-end-end">
+                {{#link-to "tour" model.tour._id}}
+                  {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+                {{/link-to}}
+              </div>
+            </div>
+          {{/title.text}}
+        {{/card.title}}
+        {{#card.content class="layout-column flex tour-info"}}
+          <div class="layout-row flex">
+            <div class="layout-column layout-align-start-start">
+              <div class="review-tour-picture" style={{background-image tourPicture}}></div>
+            </div>
+            <div class="layout-column  layout-align-center-start margin-left-xs">
+              <h4>{{model.tour.name}}</h4>
+              <p>{{model.tour.shortDesc}}</p>
+              {{#if showLongDescription}}
+                <p>{{model.tour.longDesc}}</p>
+                {{#paper-button class="margin-0" onClick=(action "hideLongDes")}}Show less {{paper-icon "keyboard-arrow-up" size=24}}{{/paper-button}}
+              {{else}}
+                {{#paper-button class="margin-0" onClick=(action "showLongDes")}}Show more {{paper-icon "keyboard-arrow-down" size=24}}{{/paper-button}}
+              {{/if}}
+            </div>
+          </div>
+
+        {{/card.content}}
+      {{/paper-card}}
+    {{!-- </div>
+    <div class="layout-column flex-xs flex-gt-xs-50">
+      {{#paper-card class="margin-right-0 margin-top-xs" as |card|}}
+        
+      {{/paper-card}}
+    </div>
+  </div> --}}
+{{/if}}

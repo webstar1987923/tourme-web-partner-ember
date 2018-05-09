@@ -1,0 +1,90 @@
+<div class="layout-row layout-xs-column">
+  <div class="layout-column flex-xs flex-gt-xs-50">
+    {{#paper-card class="margin-left-0 margin-top-xs" as |card|}}
+      {{#card.title as |title|}}
+        {{#title.text as |text|}}
+          <div class="layout-row flex">
+            <div class="layout-column flex">
+              {{#text.headline}}Guide{{/text.headline}}
+            </div>
+            <div class="layout-column flex-20 layout-align-end-end">
+              {{#link-to "guide" model.guide._id}}
+                {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+              {{/link-to}}
+            </div>
+          </div>
+        {{/title.text}}
+      {{/card.title}}
+      {{#card.content class="layout-column flex tour-info"}}
+        <div class="layout-row flex">
+          <div class="layout-column flex layout-align-center-start">
+            <div class="layout-row flex">
+              <div class="layout-column layout-align-start-start">
+                <img src={{model.guide.pic}} class="user-avatar" width="80px" height="80px"/>
+              </div>
+              <div class="layout-column  layout-align-center-start margin-left-xs">
+                <h4><span>#{{model.guide.number}} </span>{{model.guide.firstName}}</h4>
+                <h5>{{paper-icon "phone" size=14}} {{phone-format model.guide.phone}}</h5>
+                {{#if model.rating.guide}}
+                  <h4 class="margin-top-5">Rating for Tourist:</h4>
+                  {{star-rating model.rating.guide.rating
+                    numStars=5
+                    fillColor="#FDD835"
+                    readOnly=true
+                    width=20
+                  height=20}}
+                  <h5>{{model.rating.guide.comment}}</h5>
+                {{/if}}
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      {{/card.content}}
+    {{/paper-card}}
+  </div>
+  <div class="layout-column flex-xs flex-gt-xs-50">
+    {{#paper-card class="margin-right-0 margin-top-xs" as |card|}}
+      {{#card.title as |title|}}
+        {{#title.text as |text|}}
+          <div class="layout-row flex">
+            <div class="layout-column flex">
+              {{#text.headline}}Tourist{{/text.headline}}
+            </div>
+            <div class="layout-column flex-20 layout-align-end-end">
+              {{!--#link-to "tourist" model.tourist._id}}
+                {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+              {{/link-to--}}
+            </div>
+          </div>
+        {{/title.text}}
+      {{/card.title}}
+      {{#card.content class="layout-column flex tour-info"}}
+        <div class="layout-row flex">
+          <div class="layout-column flex layout-align-center-start">
+            <div class="layout-row flex">
+              <div class="layout-column layout-align-start-start">
+                <img src={{model.tourist.pic}} class="user-avatar" width="80px" height="80px"/>
+              </div>
+              <div class="layout-column  layout-align-center-start margin-left-xs">
+                <h4>{{model.tourist.firstName}}</h4>
+                <h5>{{paper-icon "phone" size=14}} {{phone-format model.tourist.phone}}</h5>
+                {{#if model.rating.tourist}}
+                  <h4 class="margin-top-5">Rating for Guide:</h4>
+                  {{star-rating model.rating.tourist.rating
+                    numStars=5
+                    fillColor="#FDD835"
+                    readOnly=true
+                    width=20
+                    height=20}}
+                  <h5>{{model.rating.tourist.comment}}</h5>
+                {{/if}}
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      {{/card.content}}
+    {{/paper-card}}
+  </div>
+</div>

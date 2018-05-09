@@ -1,0 +1,45 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Guide{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#link-to "guide" model.guide._id}}
+            {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+          {{/link-to}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-row flex">
+      <div class="layout-column flex layout-align-center-start">
+        <div class="layout-row flex">
+          <div class="layout-column layout-align-center-start">
+            <img src={{model.guide.pic}} class="user-avatar" width="80px" height="80px"/>
+          </div>
+          <div class="layout-column  layout-align-center-start margin-left-xs">
+            <h4><span>#{{model.guide.number}} </span>{{model.guide.firstName}}</h4>
+            {{star-rating model.guide.rating
+              numStars=5
+              fillColor="#FDD835"
+              readOnly=true
+              width=20
+              height=20}}
+          </div>
+        </div>
+        
+      </div>
+      <div class="layout-column flex layout-align-center-center">
+        <h5>Years in Area</h5>
+        <h4>{{model.guide.howLongLived}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-center">
+        <h5>Languages</h5>
+        <h4>{{languages}}</h4>
+      </div>
+    </div>
+  {{/card.content}}
+{{/paper-card}}

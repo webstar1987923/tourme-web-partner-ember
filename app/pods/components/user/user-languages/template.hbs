@@ -1,0 +1,131 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Languages{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    {{#if guideLanguages.length}}
+      {{#each guideLanguages as |lang index|}}
+        {{#paper-item class="md-2-line"}}
+          {{#each appConstants.languages as |cl|}}
+            {{#if (eq cl.iso lang.lang)}}
+              <img class="md-avatar" src={{concat "/assets/icons/flags/" cl.flag ".png"}}/>
+            {{/if}}
+          {{/each}}
+          <div class="md-list-item-text">
+            <h3>{{t (concat "l_" lang.lang)}}</h3>
+            <h3>{{t (concat "lang_" lang.fluency)}}</h3>
+          </div>
+        {{/paper-item}}
+      {{/each}}
+    {{else}}
+      <h4>No defined language</h4>
+    {{/if}}
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editGuide") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        {{#each guideLanguages as |lang|}}
+          {{#paper-item as |controls|}}
+            <div class="layout layout-sm-column">
+              <div class="lang-container">
+                {{#paper-select
+                  label="Language"
+                  options=languages
+                  selected=lang.lang
+                  onChange=(action 'updateLang' lang)
+                  as |langN|}}
+                  {{#each appConstants.languages as |cl|}}
+                    {{#if (or (eq cl.iso langN) (eq cl.iso langN.iso))}}
+                      <img class="lang-icon" src={{concat "/assets/icons/flags/" cl.flag ".png"}}/>
+                    {{/if}}
+                  {{/each}}
+            
+                  <span class="lang-name">{{t (concat "l_" (if langN.iso langN.iso langN))}}</span>
+                {{/paper-select}}
+              </div>
+              
+              <div class="lang-container">
+                {{#paper-select
+                  label="Fluency"
+                  class="margin-left-xs"
+                  options=appConstants.fluencyList
+                  selected=lang.fluency
+                  onChange=(action (mut lang.fluency))
+                  as |fluency|}}
+                  {{t (concat "lang_" fluency)}}
+                {{/paper-select}}
+              </div>
+              {{#paper-button class="margin-left-xs margin-top-xs" iconButton=true onClick=(action "deleteLang" lang)}}{{paper-icon "delete"}}{{/paper-button}}
+            </div>
+          {{/paper-item}}
+        {{/each}}
+
+        {{#each newLangs as |newLang|}}
+          {{#paper-item as |controls|}}
+            <div class="layout layout-sm-column">
+              <div class="lang-container">
+                {{#paper-select
+                  label="Language"
+                  options=languages
+                  selected=newLang.lang
+                  onChange=(action 'setNewLang' newLang)
+                  as |langN|}}
+                  {{#each appConstants.languages as |cl|}}
+                    {{#if (or (eq cl.iso langN) (eq cl.iso langN.iso))}}
+                      <img class="lang-icon" src={{concat "/assets/icons/flags/" cl.flag ".png"}}/>
+                    {{/if}}
+                  {{/each}}
+            
+                  <span class="lang-name">{{t (concat "l_" (if langN.iso langN.iso langN))}}</span>
+                {{/paper-select}}
+              </div>
+              <div class="lang-container">
+                {{#paper-select
+                  label="Fluency"
+                  class="margin-left-xs"
+                  options=appConstants.fluencyList
+                  selected=newLang.fluency
+                  onChange=(action 'setNewFluency' newLang)
+                  as |fluency|}}
+                  {{t (concat "lang_" fluency)}}
+                {{/paper-select}}
+              </div>
+              {{#if (and newLang.lang newLang.fluency) }}
+                {{#paper-button class="margin-left-xs" iconButton=true onClick=(action "deleteLang" newLang)}}{{paper-icon "delete"}}{{/paper-button}}
+              {{/if}}
+            </div>
+          {{/paper-item}}
+        {{/each}}
+
+        {{#paper-button noink=true primary=true onClick=(action 'addNewLang')}}ADD MORE{{/paper-button}}
+        
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

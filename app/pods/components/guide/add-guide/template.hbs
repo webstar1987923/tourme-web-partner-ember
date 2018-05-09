@@ -1,0 +1,114 @@
+{{#paper-stepper
+  class=(concat "limit-height " (if vertical "" "md-whiteframe-4dp"))
+  currentStep=currentStep
+  linear=linear
+  vertical=vertical
+  alternative=alternative
+  mobileStepper=mobileStepper
+  onStepChange=(action (mut currentStep))
+  onStepperCompleted=(action (mut showCompleteDialog) true) as |stepper|}}
+
+  {{#stepper.step label="Add Tour" as |step|}}
+    {{#step.body}}
+      <div class="layout-row">
+        {{form.input class="layout-column flex layout-align-center-start" label="Enter Name of Tour" type="text" required=true value="Name" onChange=(action (mut name))}}
+        {{form.input class="layout-column flex layout-align-center-start" label="Duration in minutes" type="number" required=true value="Hrs" onChange=(action (mut duration))}}
+        {{#paper-select
+          label="Energy Level Needed"
+          class="layout-column flex layout-align-center-start"
+          options=appConstants.enduranceList
+          selected=endurance
+          onChange=(action (mut endurance))
+          as |endurance|}}
+          {{t (concat "end_" endurance)}}
+        {{/paper-select}}
+      </div>
+      <div class="layout-row">
+        {{form.input class="layout-column flex layout-align-center-start" label="Cost" type="number" required=true value=model.cost.amount onChange=(action (mut model.cost.amount))}}
+        {{form.input class="layout-column flex layout-align-center-start" label="Max # of People" type="number" required=true value=model.capacity onChange=(action (mut model.capacity))}}
+      </div>
+
+      <div class="margin-top-xs alert-toast">
+        <h5 id="labelTypes" class="input-label">Mark all that applies</h5>
+        {{partials/tour-types model=model field="tourTypes" changeAttr=changeAttr}}
+        {{#if alertNoTypes}}
+          {{#paper-toast duration=5000 parent="#labelTypes" swipeToClose=true onClose=(action "showAlertNoTypes" false) as |toast|}}
+            {{#toast.text}}Select at least one tour type{{/toast.text}}
+          {{/paper-toast}}
+        {{/if}}
+      </div>
+
+    {{/step.body}}
+    {{#step.actions as |nextStep previousStep|}}
+      {{#paper-button onClick=(action previousStep)}}
+        Cancel
+      {{/paper-button}}
+
+      {{#paper-button primary=true raised=true onClick=(action nextStep)}}
+        Next
+      {{/paper-button}}
+    {{/step.actions}}
+  {{/stepper.step}}
+
+  {{#stepper.step label="Details" as |step|}}
+    {{#paper-form class="layout-column flex" onValidityChange=(action "validityChange") as |form|}}
+      {{#step.body}}
+        {{!--form.input class="layout-column flex layout-align-center-start" label="Short Description for Tour" type="text" required=true value="" onChange=(action (mut sTourDescription))}}
+        {{form.input class="layout-column flex layout-align-center-start" label="Long Description for Tour" type="text" required=true value="" onChange=(action (mut lTourDescription))--}}
+
+        {{form.input class="layout-column flex layout-align-center-start" textarea=true block=true label="Short Description" type="text" required=true maxlength=150 passThru=(hash rows=2 maxRows=5) value="" onChange=(action (mut sTourDescription))}}
+        {{form.input class="layout-column flex layout-align-center-start" textarea=true block=true label="Long Description" type="text" required=true passThru=(hash rows=4 maxRows=5) value="" onChange=(action (mut lTourDescription))}}
+
+            {{!--paper-input textarea=true block=true label="Short Description" maxlength=150 passThru=(hash rows=2 maxRows=5)
+              value=model.shortDesc onChange=(action (mut model.shortDesc))}}
+
+            {{paper-input textarea=true block=true label="Long Description" passThru=(hash rows=4 maxRows=5)
+              value=model.longDesc onChange=(action (mut model.longDesc))--}}
+
+
+        <div class="layout-row">
+          {{paper-switch label="Kid Friendly" class="flex" onChange=(action (mut KidFridendly))}}
+          {{paper-switch label="Handycap Friendly" class="flex" onChange=(action (mut HandyFridendly))}}
+        </div>
+        {{form.input class="layout-column flex layout-align-center-start" label="Extra Cost? If so, Please Enter Cost & Reason" type="text" required=true value="" onChange=(action (mut extraCost))}}
+
+        <div class="margin-top-xs alert-toast">
+          <h5 id="labelTypes" class="input-label">Available Start time Window</h5>
+
+          {{paper-switch label="Car Used" class="flex" onChange=(action (mut carUsed))}}
+          {{paper-switch label="Is this Shore Excursion Tour?" class="flex" onChange=(action (mut shoreExcursionTour))}}
+        </div>
+
+      {{/step.body}}
+      {{#step.actions as |nextStep previousStep|}}
+        {{#paper-button onClick=(action previousStep)}}
+          Back
+        {{/paper-button}}
+        {{#paper-button primary=true raised=true onClick=(action nextStep)}}
+          Next
+        {{/paper-button}}
+      {{/step.actions}}
+    {{/paper-form}}
+  {{/stepper.step}}
+
+  {{#stepper.step label="Photos" as |step|}}
+    {{#step.body}}
+      <div class="layout-row">
+        <h5 id="labelTypes" class="input-label">Tour Photos</h5>
+
+      </div>
+      {{form.input class="layout-column flex layout-align-center-start" label="Additional Info" type="text" required=true value="" onChange=(action (mut additionalInfo))}}
+      {{form.input class="layout-column flex layout-align-center-start" label="Meeting Place" type="text" required=true value="" onChange=(action (mut meetingPlace))}}
+
+    {{/step.body}}
+    {{#step.actions as |nextStep previousStep|}}
+      {{#paper-button onClick=(action previousStep)}}
+        Back
+      {{/paper-button}}
+      {{#paper-button primary=true raised=true onClick=(action nextStep)}}
+        Submit
+      {{/paper-button}}
+    {{/step.actions}}
+  {{/stepper.step}}
+
+{{/paper-stepper}}

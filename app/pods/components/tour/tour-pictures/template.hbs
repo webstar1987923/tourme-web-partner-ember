@@ -1,0 +1,23 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Pictures{{/text.headline}}
+        </div>
+        {{!-- <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEditTour") }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div> --}}
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-column layout-gt-md-row">
+      {{#each model.pictures as |pic|}}
+        <div class="layout-column flex-gt-md-25">
+          {{partials/image-modal image=pic}}
+        </div>
+      {{/each}}
+    </div>
+  {{/card.content}}
+{{/paper-card}}

@@ -1,0 +1,7 @@
+<div class="height-button layout-row layout-align-start-center margin-top-xs">
+  {{#if (eq model.guideInfo.approved "approved")}}
+    {{#paper-button raised=true primary=true onClick=(action "changeStatusApproved" "suspended")}}Suspend{{/paper-button}}
+  {{else}}
+    {{#paper-button raised=true primary=true onClick=(action "changeStatusApproved" "approved")}}Approve{{/paper-button}}
+  {{/if}}
+</div>

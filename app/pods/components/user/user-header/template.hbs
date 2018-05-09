@@ -1,0 +1,67 @@
+<div class="tour-header">
+  <div class="header-image" style={{background-image "/assets/images/background-office.jpg"}}>
+    <div class="layout-row layout-align-end-start"> 
+      {{#paper-button id="buttonMessage" raised=true primary=true onClick=(action "showMessageModal" true) }}Send Message{{/paper-button}}
+    </div>
+    <div class="header-data">
+      
+      {{!-- <img src={{model.pic}} class="user-avatar header-image-circle"/> --}}
+      <img src={{if model.pic model.pic (get-gravatar-image model.email.login)}} class="user-avatar header-image-circle"/>
+      
+      {{#if model.complete}}
+        <div class="status-row b-color-primary">
+          <span>{{get-admin-profile-name model.backInfo.profile}}</span>
+        </div>
+      {{/if}}
+      <div class="header-data-content">
+        <h1 class="margin-0">Back Office User</h1>
+        <h2 class="margin-0">{{model.firstName}} {{model.lastName}}</h2>
+      </div>
+      {{#paper-button class="edit button-icon-white" iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+    </div>
+  </div>
+</div>
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editTourist") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-row">
+          <div class="layout-column flex-100">
+            {{form.input label="First Name" required=true value=model.firstName onChange=(action (mut model.firstName))}}
+            {{form.input label="Last Name" required=true value=model.lastName onChange=(action (mut model.lastName))}}
+            {{#paper-select  
+              class="flex"
+              label="Profile"
+              options=appConstants.adminProfiles
+              required=true
+              selected=model.backInfo.profile
+              searchField='name'
+              onChange=(action 'updateBackInfoProfile')
+              as |pro|}}
+                {{get-admin-profile-name (if pro.value pro.value pro)}}
+            {{/paper-select}}  
+          </div>
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+
+{{#if showNewMessage}}
+  {{modal-message messageTitle=replyMessageTitle messageBody=replyMessageMsg onSend=(action "sendNewMessage") onClose=(action "showMessageModal" false)}}
+{{/if}}

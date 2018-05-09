@@ -1,0 +1,84 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Additional Info{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-column flex layout-align-center-start">
+      <h5>Description</h5>
+      <h4>{{model.guideInfo.aboutYou}}</h4>
+    </div>
+    
+    <div class="layout-row flex margin-top-low">
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Years in Area</h5>
+        <h4>{{if model.guideInfo.howLongLived model.guideInfo.howLongLived "0"}}</h4>
+      </div>
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Have you given tours before?</h5>
+        <h4>{{if model.guideInfo.toursBefore "Yes" "No"}}</h4>
+      </div>
+    </div>
+
+
+    <h5 class="margin-top-low">Hobbies</h5>
+    {{paper-chips
+      content=model.guideInfo.hobbies
+      readOnly=true}}
+
+    <h5 class="margin-top-low">Specialties:</h5>
+    {{paper-chips
+      content=specialties
+      readOnly=true}}
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content class="tour-info"}}
+        {{paper-input textarea=true block=true label="Description" passThru=(hash rows=5)
+          value=model.guideInfo.aboutYou onChange=(action (mut model.guideInfo.aboutYou))}}
+
+        {{paper-input class="width-100" label="How long have you lived in the area in which you are going to be giving tours?" value=model.guideInfo.howLongLived onChange=(action (mut model.guideInfo.howLongLived))}}
+
+        {{#paper-switch value=model.guideInfo.toursBefore onChange=(action (mut model.guideInfo.toursBefore))}}
+          Have you given tours before?
+        {{/paper-switch}}
+
+        <h5 class="margin-top-low">Hobbies:</h5>
+        {{paper-chips
+          content=model.guideInfo.hobbies
+          removeItem=(action "removeHobby")
+          addItem=(action "addHobby")
+          placeholder="Add a hobby"}}
+
+        <h5 class="margin-top-low">Specialties:</h5>
+
+        {{partials/tour-types model=model field="guideInfo.specialties" changeAttr=changeAttr}}
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#paper-button primary=true onClick=(action "editGuide")}}Save{{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

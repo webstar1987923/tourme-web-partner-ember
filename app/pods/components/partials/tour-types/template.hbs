@@ -1,0 +1,26 @@
+{{#each tourTypes as |tourTypeRow|}}
+  <div class="layout-row">
+    {{#each tourTypeRow as |tourType|}}
+      <div class="layout-column flex">
+        {{#paper-checkbox disabled=isDisabled value=(contain-specialties specialties tourType.name) onChange=(action "changeSpecialties" tourType)}}
+          {{t (concat "tt_" tourType.name)}}
+        {{/paper-checkbox}}
+      </div>
+    {{/each}}
+  </div>
+{{/each}}
+
+{{!-- Esta es otra forma de hacerlo todo en el template y no tener que sacar los row en el controlador --}}
+{{!-- {{#each appConstants.tourType as |tourType index1|}}
+  <div class="layout-row">
+    {{#each appConstants.tourType as |tourType index2|}}
+      {{#if (and (gte index2 (mult index1 3)) (lte index2 (add 2 (mult index1 3))))}}
+        <div class="layout-column flex">
+          {{#paper-checkbox disabled=isDisabled value=(contain-specialties specialties tourType.name) onChange=(action "changeSpecialties" tourType)}}
+            {{t (concat "tt_" tourType.name)}}
+          {{/paper-checkbox}}
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
+{{/each}}--}}

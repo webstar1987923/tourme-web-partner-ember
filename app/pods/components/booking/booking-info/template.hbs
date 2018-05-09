@@ -1,0 +1,34 @@
+<div class="margin-top-xs table-info">
+  <table>
+    <tr>
+      <td class="td-title">Scheduled</td>
+      <td>{{scheduled}}</td>
+      <td class="td-title">Booking Date</td>
+      <td>{{bookingDate}}</td>
+    </tr>
+    <tr>
+      <td class="td-title">Start</td>
+      <td>{{start}}</td>
+      <td class="td-title">Start Address</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="td-title">End</td>
+      <td>{{end}}</td>
+      <td class="td-title">End Address</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="td-title">Duration</td>
+      <td>{{get-tour-duration model dataUtils}}</td>
+      <td class="td-title">Distance</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="td-title">Peoples</td>
+      <td>{{model.people}}</td>
+      <td class="td-title">Special Request</td>
+      <td>{{if model.specialRequest model.specialRequest "No"}}</td>
+    </tr>
+  </table>
+</div>

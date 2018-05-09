@@ -1,0 +1,135 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Personal Information{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+
+    <div class="layout-row flex">
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Birthday</h5>
+        <h4>{{if birthday birthday "-"}}</h4>
+      </div>
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Gender</h5>
+        <h4>{{if model.gender (capitalize model.gender) "-"}}</h4>
+      </div>
+    </div>
+    <h5 class="margin-top-low">Address</h5>
+    <div class="layout-row flex margin-top-xs">
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Street</h5>
+        <h4>{{if model.address.street model.address.street "-"}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Apartment</h5>
+        <h4>{{if model.address.apartment model.address.apartment "-"}}</h4>
+      </div>
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Country</h5>
+        <div class="layout-row">
+          {{#if model.address.country}}
+            <img class="lang-icon" src={{concat "/assets/icons/flags/" model.address.country ".png"}}/>
+            <h4 class="margin-0">{{countryName}}</h4>
+          {{else}}
+            <h4 class="margin-0">-</h4>
+          {{/if}}
+        </div>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>City</h5>
+        <h4>{{if model.address.cityState model.address.cityState "-"}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Zip Code</h5>
+        <h4>{{if model.address.zipCode model.address.zipCode "-"}}</h4>
+      </div>
+    </div>
+
+   {{!--  <h5 class="margin-top-low">Photos</h5>
+    <div class="layout layout-sm-column">
+      {{#each guidePictures as |pic|}}
+        <img src={{pic.url}} class="user-avatar cursor-pointer margin-left-xs" width="80px" height="80px" {{action "openImageModal" pic.url}}/>
+      {{/each}}
+    </div> --}}
+    
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editUser") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        
+        <div class="layout layout-sm-column margin-top-low">
+          {{paper-pikaday class="flex" disabled=isDisabled label="Birthday" useUTC=true format="MM/DD/YYYY" maxDate=maxDate yearRange=yearRange value=birthday onChange=(action (mut model.dayOfBirth))}}
+          {{#paper-select  
+            class="flex"
+            disabled=isDisabled
+            label="Gender"
+            options=appConstants.genders
+            selected=model.gender
+            onChange=(action (mut model.gender))
+            as |gen|}}
+            {{gen}}
+          {{/paper-select}}  
+        </div>
+        <h4>Address</h4>
+        <div class="layout layout-sm-column">
+          {{paper-input class="flex" label="Street"    value=model.address.street onChange=(action (mut model.address.street))}}
+          {{paper-input class="flex" label="Apartment" value=model.address.apartment onChange=(action (mut model.address.apartment))}}
+          {{paper-input class="flex" label="City"      value=model.address.cityState onChange=(action (mut model.address.cityState))}}
+        </div>
+        <div class="layout layout-sm-column">
+          {{paper-input class="flex-30" label="Zip Code"  value=model.address.zipCode onChange=(action (mut model.address.zipCode))}}
+          {{#paper-select
+              label="Select Country..."
+              class="flex-30"
+              options=appConstants.territories
+              selected=model.address.country
+              onChange=(action 'updateCountry')
+              as |country|}}
+              <span class="lang-name">{{get-country-name (if country.iso country.iso country)}}</span>
+            {{/paper-select}}
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+
+{{#if showModalImage}}
+  {{#paper-dialog class="flex-77" onClose=(action "closeDialog" "cancel") clickOutsideToClose=true}}
+    {{#paper-toolbar}}
+      {{#paper-toolbar-tools}}
+        <h2>{{imName}}</h2>
+        <span class="flex"></span>
+        {{#paper-button iconButton=true onClick=(action "closeDialog" "cancel")}}{{paper-icon icon="close"}}{{/paper-button}}
+      {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+    {{#paper-dialog-content}}
+        <img style="margin: auto; max-width: 100%;" src={{modalImage}}>
+    {{/paper-dialog-content}}
+  {{/paper-dialog}}
+{{/if}}

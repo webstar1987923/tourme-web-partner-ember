@@ -1,0 +1,9 @@
+{{#paper-card class="layout-fill inner-body background-details"}}
+  {{tour/tour-header model=model cover=cover cancel="cancel" save="save" saveSuccess=saveSuccess}}
+  {{#paper-card-content}}    
+    {{tour/tour-actions model=model save="save" saveSuccess=saveSuccess}}
+    {{tour/tour-info model=model numBookings=numBookings numTourists=numTourists cancel="cancel" save="save" saveSuccess=saveSuccess}}
+    {{tour/tour-guide model=model}}
+    {{tour/tour-pictures model=model}}
+  {{/paper-card-content}}
+{{/paper-card}}

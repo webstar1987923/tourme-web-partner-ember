@@ -1,0 +1,61 @@
+<div class="tour-header">
+  <div class="header-image" style={{background-image "/assets/images/login-background.jpg"}}>
+    <div class="layout-row layout-align-end-start"> 
+      {{#paper-button id="buttonMessage" raised=true primary=true onClick=(action "showMessageModal" true) }}Send Message{{/paper-button}}
+    </div>
+    <div class="header-data">
+      
+      <img src={{model.pic}} class="user-avatar header-image-circle"/>
+      <div class="status-row {{if (eq model.guideInfo.approved "approved") "b-color-success" "b-color-primary"}}">
+        <span>{{capitalize  model.guideInfo.approved}}</span>
+      </div>
+      <div class="header-data-content">
+        <h1 class="margin-0">Guide</h1>
+        <h2 class="margin-0">{{model.firstName}} {{model.lastName}}</h2>
+        <div class="layout-row layout-align-start-center margin-top-5">
+          {{star-rating model.rating.guide.value
+            numStars=5
+            fillColor="#FDD835"
+            readOnly=true
+            width=20
+            height=20}}
+          <a href="{{concat "/ratings?gid=" model.id}}" class="layout-align-start-center margin-left-xs color-white">{{if model.rating.guide.count model.rating.guide.count "0"}} Reviews</a>
+        </div>
+      </div>
+      {{#paper-button class="edit button-icon-white" iconButton=true onClick=(action "showEdit" true) }}{{paper-icon "mode-edit"}}{{/paper-button}}
+    </div>
+  </div>
+</div>
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "showEdit" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editGuide") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showEdit" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-row">
+          <div class="layout-column flex-100">
+            {{form.input label="First Name" required=true value=model.firstName onChange=(action (mut model.firstName))}}
+            {{form.input label="Last Name" required=true value=model.lastName onChange=(action (mut model.lastName))}}
+          </div>
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showEdit" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+
+{{#if showNewMessage}}
+  {{modal-message messageTitle=replyMessageTitle messageBody=replyMessageMsg onSend=(action "sendNewMessage") onClose=(action "showMessageModal" false)}}
+{{/if}}

@@ -1,0 +1,6 @@
+{{yield}}
+<div class="layout-row">
+  <span class="flex"></span>
+  {{#paper-button onClick=(action "cancelCropper")}}Cancel Edition{{/paper-button}}
+  {{#paper-button onClick=(action "getCroppedAvatar") primary=true}}Accept Edition{{/paper-button}}
+</div>

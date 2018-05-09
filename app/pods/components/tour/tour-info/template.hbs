@@ -1,0 +1,198 @@
+{{#paper-card as |card|}}
+  {{#card.title as |title|}}
+    {{#title.text as |text|}}
+      <div class="layout-row flex">
+        <div class="layout-column flex">
+          {{#text.headline}}Information{{/text.headline}}
+        </div>
+        <div class="layout-column flex-20 layout-align-end-end">
+          {{#paper-button iconButton=true onClick=(action "showEditTour") }}{{paper-icon "mode-edit"}}{{/paper-button}}
+        </div>
+      </div>
+    {{/title.text}}
+  {{/card.title}}
+  {{#card.content class="layout-column flex tour-info"}}
+    <div class="layout-row flex">
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Cost</h5>
+        <h4>{{amount.text}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Duration</h5>
+        <h4>{{duration}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Energy Level Needed</h5>
+        <h4>{{t (concat "end_" model.endurance)}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Max # of People</h5>
+        <h4>{{model.capacity}}</h4>
+      </div>
+    </div>
+    <div class="layout-row flex margin-top-low">
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Kid Friendly</h5>
+        <h4>
+          {{#if model.flags.kids}}
+            Yes
+          {{else}}
+            No
+          {{/if}}
+        </h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Handicap Friendly</h5>
+        <h4>
+          {{#if model.flags.handycap}}
+            Yes
+          {{else}}
+            No
+          {{/if}}
+        </h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Car Used</h5>
+        <h4>
+          {{#if model.flags.carUsed}}
+            Yes
+          {{else}}
+            No
+          {{/if}}
+        </h4>
+      </div>
+      <div class="layout-column flex layout-align-center-start">
+        <h5>Is this Shore Excursion Tour</h5>
+        <h4>
+          {{#if model.flags.shoreExc}}
+            Yes
+          {{else}}
+            No
+          {{/if}}
+        </h4>
+      </div>
+    </div>
+    <div class="layout-row flex margin-top-low">
+      <div class="layout-column flex-25 layout-align-center-start">
+        <h5>Available Start Time</h5>
+        <h4>{{availableStartTime}}</h4>
+      </div>
+      <div class="layout-column flex layout-align-start-start">
+        <h5>Extra Cost</h5>
+        {{#if model.extraCost}}
+          {{model.extraCost}}
+        {{else}}
+          <h4>No</h4>
+        {{/if}}
+      </div>
+    </div>
+    <div class="layout-row flex margin-top-low">
+      <div class="layout-column flex-60 layout-align-end-start">
+        <h5>Tour Type</h5>
+        {{paper-chips
+          content=tourTypes
+          readOnly=true}}
+      </div>
+      <div class="layout-row flex layout-align-end-end">
+        <a href="{{concat "/bookings?ttid=" model._id}}" class="layout-align-start-center margin-left-xs">{{numBookings}} Bookings</a>
+        <a href="{{concat "/tourists?ttid=" model._id}}" class="layout-align-start-center margin-left-xs">{{numTourists}} Tourists</a>
+      </div>
+    </div>
+  {{/card.content}}
+{{/paper-card}}
+
+{{#if showEditDialog}}
+  {{#paper-dialog class="flex-50" onClose=(action "cancelEditTour") clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "editTour") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Edit {{model.name}}</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "cancelEditTour")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content class="content-edit-dialog"}}
+        <div class="layout-row">
+          <div class="layout-row flex">
+            {{form.input class="layout-column flex layout-align-center-start" label="Cost" type="number" required=true value=model.cost.amount onChange=(action (mut model.cost.amount))}}
+            {{#paper-select
+              class="layout-column flex layout-align-center-start"
+              disabled=isDisabled
+              label="Currency"
+              options=appConstants.currencies
+              selected=model.cost.currency
+              onChange=(action (mut model.cost.currency))
+              as |curr|}}
+              {{curr}}
+            {{/paper-select}}
+          </div>
+          {{form.input class="layout-column flex layout-align-center-start" label="Duration in minutes" type="number" required=true value=model.duration onChange=(action (mut model.duration))}}
+
+          {{#paper-select
+            label="Energy Level Needed"
+            class="layout-column flex layout-align-center-start"
+            options=appConstants.enduranceList
+            selected=model.endurance
+            onChange=(action (mut model.endurance))
+            as |endurance|}}
+            {{t (concat "end_" endurance)}}
+          {{/paper-select}}
+
+          {{form.input class="layout-column flex layout-align-center-start" label="Max # of People" type="number" required=true value=model.capacity onChange=(action (mut model.capacity))}}
+        </div>
+
+        <div class="layout-row margin-top-xs">
+          {{#paper-checkbox class="layout-column flex layout-align-center-start" value=model.flags.kids onChange=(action (mut model.flags.kids))}}
+            Fid Friendly
+          {{/paper-checkbox}}
+          {{#paper-checkbox class="layout-column flex layout-align-center-start" value=model.flags.handycap onChange=(action (mut model.flags.handycap))}}
+            Handicap Friendly
+          {{/paper-checkbox}}
+          {{#paper-checkbox class="layout-column flex layout-align-center-start" value=model.flags.carUsed onChange=(action (mut model.flags.carUsed))}}
+            Car Used
+          {{/paper-checkbox}}
+          {{#paper-checkbox class="layout-column flex layout-align-center-start" value=model.flags.shoreExc onChange=(action (mut model.flags.shoreExc))}}
+            Is this Shore Excursion Tour
+          {{/paper-checkbox}}
+        </div>
+
+        <div class="layout-row margin-top-xs">
+          <div class="layout-row flex">
+            {{paper-time-picker
+              value=firstAvailableHour
+              class="layout-column flex layout-align-center-start z-i-100"
+              label='First Available Hour'
+              onChange=(action "setStartTime" "first")
+            }}
+            {{paper-time-picker
+              value=lastAvailableHour
+              class="layout-column flex layout-align-center-start z-i-100"
+              label='Last Available Hour'
+              onChange=(action "setStartTime" "last")
+            }}
+          </div>
+          {{form.input  class="layout-column flex layout-align-center-start" label="Extra Cost" value=model.extraCost onChange=(action (mut model.extraCost))}}
+        </div>
+
+        <div class="margin-top-xs alert-toast">
+          <h5 id="labelTypes" class="input-label">Tour Type</h5>
+          {{partials/tour-types model=model field="tourTypes" changeAttr=changeAttr}}
+          {{#if alertNoTypes}}
+            {{#paper-toast duration=5000 parent="#labelTypes" swipeToClose=true onClose=(action "showAlertNoTypes" false) as |toast|}}
+              {{#toast.text}}Select at least one tour type{{/toast.text}}
+            {{/paper-toast}}
+          {{/if}}
+        </div>
+
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "cancelEditTour")}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Save{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

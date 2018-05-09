@@ -1,0 +1,119 @@
+{{#paper-toolbar-tools class="toolbar-shadow"}}
+  {{#if toolBar.statusBack}}
+    <a href="#" {{action 'back'}} class="active ember-view"> {{paper-icon "keyboard-arrow-left" size=24}} Back</a>
+  {{/if}}
+  <span class="flex"></span>
+  {{!-- {{#paper-button iconButton=true}}
+    {{paper-icon "notifications" size=28}}
+  {{/paper-button}}
+  {{#paper-button iconButton=true}}
+    {{paper-icon "mail-outline" size=28}}
+  {{/paper-button}}
+  {{#paper-button iconButton=true}}
+    {{paper-icon "message" size=28}}
+  {{/paper-button}} --}}
+  {{#paper-menu   as |menu| }}
+    {{#menu.trigger}}
+      {{#paper-button  }}
+        <div class="layout-row  layout-align-end-center">
+          <!--div>{{user-avatar value=session.data.authenticated.picture}}</div-->
+          <div><img src={{session.data.picture}} onerror="this.src='/assets/images/usericon.png';" class="img-circle nav-photo" alt="User"></div>
+          <div class="nav-text">  &nbsp;{{session.data.authenticated.firstName}}</div>
+        </div>      
+      {{/paper-button}}
+    {{/menu.trigger}}
+    {{#menu.content  as |content|}}
+      {{#content.menu-item onClick=(action "toProfile")}}
+        {{paper-icon "account-circle"}}
+        <span>Profile</span>
+      {{/content.menu-item}}    
+      {{!--#content.menu-item onClick=(action "showChangeProfilePicture" true)}}
+        {{paper-icon "tag_faces"}}
+        <span>Change Profile Picture</span>
+      {{/content.menu-item--}}
+      {{#content.menu-item onClick=(action 'showChangePassword' true) }}
+        {{paper-icon "vpn key"}}
+        <span>Change Password</span>
+      {{/content.menu-item}}     
+      {{paper-divider}} 
+      {{#if session.isAuthenticated}}
+        {{#content.menu-item onClick="logout" }}
+          {{paper-icon "exit to app"}}
+          <span>Logout</span>
+        {{/content.menu-item}}    
+      {{/if}}    
+    {{/menu.content}}
+  {{/paper-menu}}
+{{/paper-toolbar-tools}}
+
+{{#if modalChangePassword}}
+  {{#paper-dialog class="flex-gt-sm-40 flex-xs" onClose=(action "showChangePassword" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "changePassword") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Change Password</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showChangePassword" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+        <div class="layout-column flex-100">
+          {{form.input icon="remove_red_eye" type="password" label="Current password" value=currentPassword
+          onChange=(action (mut currentPassword)) required=true errorMessages=(hash required="Required")}}
+          {{form.input icon="remove_red_eye" customValidations=newpasswordValidation type="password" label="New password" value=newPassword
+          onChange=(action 'changeNewPassword') required=true errorMessages=(hash required="Required")}}
+          {{form.input icon="remove_red_eye" type="password" onChange=(action "changeConfirmPassword") errors=newPasswordValidation label="Confrim password" value=confirmPassword required=true errorMessages=(hash required="Required")}}
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showChangePassword" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Change Password{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}
+
+{{#if modalChangeProfilePicture}}
+  {{#paper-dialog class="flex-gt-sm-40 flex-xs" onClose=(action "showChangeProfilePicture" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "changeProfilePicture") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Change Profile Picture</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showChangeProfilePicture" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content class="padding-bottom-0"}}
+        <div class="layout-column layout-align-center-center">
+          {{#if newCropperPicture}}
+            {{#avatar-cropper cancelCropper="cancelCropper" acceptCropper="acceptCropper"}}
+              <div id="cropperContainer" class="cropper-container">
+                <img class="cropper-container" src={{newCropperPicture}}>
+              </div>
+            {{/avatar-cropper}}
+          {{else}}
+            {{#paper-button class="btn-change-profile-picture" onClick=(action "selectImage" false)}}
+              {{!-- <img src={{userProfilePicture}} class="user-avatar" width="150" height="150"> --}}
+               <div class="user-avatar" style={{background-image userProfilePicture}}>
+               </div>
+              <input type="file" class="input-file" accept="image/*"  onchange={{action "selectImage" value="target"}}>
+            {{/paper-button}}
+            {{#paper-button raised=true class="btn-change-profile-mini" iconButton=true}}{{paper-icon "photo_camera"}}{{/paper-button}}
+          {{/if}}
+        </div>
+      {{/paper-dialog-content}}
+
+      {{#unless newCropperPicture}}
+        {{#paper-dialog-actions class="layout-row"}}
+          <span class="flex"></span>
+          {{#paper-button onClick=(action "showChangeProfilePicture" false)}}Cancel{{/paper-button}}
+          {{#form.submit-button primary=true disabled=(not newImage)}}Save{{/form.submit-button}}
+        {{/paper-dialog-actions}}
+      {{/unless}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

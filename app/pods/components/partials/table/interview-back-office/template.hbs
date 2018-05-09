@@ -1,0 +1,7 @@
+<div class="layout-row  layout-align-start-center">
+  {{#if value}}
+    {{user-avatar value=(if value.pic value.pic (get-gravatar-image value.email.login))}}&nbsp;&nbsp;<span class="color-black">{{value.firstName}}&nbsp;{{value.lastName}}</span>
+  {{else}}
+    Not assigned
+  {{/if}}
+</div>

@@ -1,0 +1,34 @@
+<div class="layout-row flex tour-actions layout-align-start-center">
+  {{#if (or (eq model.status "pending") (eq model.status "rejected") (eq model.status "paused"))}}
+    {{#paper-button raised=true primary=true onClick=(action "changeStatus" "approved")}}Approve{{/paper-button}}
+  {{/if}}
+  {{#if (eq model.status "pending")}}
+    {{#paper-button raised=true primary=true onClick=(action "changeStatus" "rejected")}}Reject{{/paper-button}}
+  {{/if}}
+  {{#if (eq model.status "approved")}}
+    {{#paper-button raised=true warn=true onClick=(action "changeStatus" "paused")}}Pause{{/paper-button}}
+  {{/if}}
+  {{#if (or (eq model.status "approved") (eq model.status "paused"))}}
+    {{#paper-button raised=true primary=true onClick=(action "showAlertCancel" true)}}Cancel{{/paper-button}}
+  {{/if}}
+</div>
+
+{{#if alertCancel}}
+  {{#paper-dialog class="flex-50" onClose=(action "showAlertCancel" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "changeStatus" "cancelled") as |form|}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Are you sure you want to cancel this tour? this action is irreversible.</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showAlertCancel" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showAlertCancel" false)}}No{{/paper-button}}
+        {{#form.submit-button primary=true}}Yes{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

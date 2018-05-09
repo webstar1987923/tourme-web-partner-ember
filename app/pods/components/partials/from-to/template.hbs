@@ -1,0 +1,35 @@
+<div class="user-rating width-100 layout-row flex layout-align-start-center">
+  <img src={{fromPic}} onerror="this.src='/assets/images/usericon.png';" class="margin-right-xs img-user-default">
+  <div class="layout-column">
+    <div class="layout-row layout-align-start-center">
+      <h2>{{fromType}}</h2>
+      {{#if fromLinkTo}}
+        {{#link-to fromLinkTo fromLinkId}}
+          {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+        {{/link-to}}
+      {{/if}}
+    </div>
+    <h3>{{fromName}}</h3>
+  </div>
+</div>
+
+<div class="divider width-100">
+  {{paper-divider}}
+  <h3>to</h3>
+</div>
+
+<div class="user-rating width-100 layout-row flex layout-align-end-center">
+  <div class="layout-column layout-align-center-end">
+    <div class="layout-row layout-align-end-center">
+      {{#if toLinkTo}}
+        {{#link-to toLinkTo toLinkId}}
+          {{#paper-button iconButton=true}}{{paper-icon "remove-red-eye"}}{{/paper-button}}
+        {{/link-to}}
+      {{/if}}
+      <h2>{{toType}}</h2>
+    </div>
+    <h3>{{toName}}</h3>
+  </div>
+  <img src={{toPic}} onerror="this.src='/assets/images/usericon.png';" class="margin-left-xs img-user-default">
+</div>
+      

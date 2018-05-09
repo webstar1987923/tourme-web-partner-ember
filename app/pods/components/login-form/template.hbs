@@ -1,0 +1,76 @@
+<div class="layout-row layout-align-center-center height-100">
+	<div class="layout-column flex-xs flex-sm-80 flex-gt-sm-30 max-width-login">
+		{{#paper-card as |card|}}
+
+			<div class="title">
+			</div>
+
+			{{#card.content class="layout-row layout-align-space-between"}}
+				{{#paper-form class="width-100" onSubmit=(action "authenticateWithOAuth2") as |form|}}
+					<div class="layout-row">
+						<div class="layout-column flex-100">
+							{{form.input class="inputLogin" icon="person" label="Email" value=identification
+							onChange=(action (mut identification)) required=true errorMessages=(hash required="Email required")}}
+
+							{{form.input class="inputLogin" icon="remove_red_eye" label="Password" value=passwordLogin
+							onChange=(action (mut passwordLogin)) type="password" required=true errorMessages=(hash required="Password required")}}
+						</div>
+					</div>
+					<!--div class="layout-row layout-align-center-center">
+						<img src="/assets/images/letstravel.gif" alt="">
+					</div-->
+					
+					{{#if loadingAction}}
+            <div class="layout-row layout-align-center-center">
+              {{paper-progress-circular diameter=40}}
+            </div>
+          {{else}}
+						<div class="layout-column layout-align-end-center">
+							{{#form.submit-button raised=true primary=true class="btn-login"}}Login{{/form.submit-button}}
+							<h5 id="forgotPassword" class="cursor-pointer margin-top-xs" {{action "showModalForgot" true}}>Lost Your Password?</h5>
+						</div>
+					{{/if}}
+					{{paper-divider}}
+						<div class="layout-column layout-align-end-center">
+							<h3  class="margin-top-xs" >Or</h3>
+							{{#paper-button class="btn-login" raised=true warn=true onClick="register" }}Become a Guide{{/paper-button}}
+							
+						</div>					
+				{{/paper-form}}
+			{{/card.content}}
+			{{paper-divider}}
+		{{/paper-card}}
+
+	</div>
+</div>
+
+{{#if modalForgot}}
+	{{#paper-dialog class="flex-gt-sm-40 flex-xs" onClose=(action "showModalForgot" false) clickOutsideToClose=true}}
+    {{#paper-form onSubmit=(action "forgotPassword") as |form|}}
+    	{{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          <h2>Recover Password</h2>
+          <span class="flex"></span>
+          {{#paper-button iconButton=true onClick=(action "showModalForgot" false)}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+
+      {{#paper-dialog-content}}
+      	<div class="layout-column flex-100">
+					{{form.input class="inputLogin" customValidations=emailValidation icon="person" label="Email" value=recoverEmail
+					onChange=(action (mut recoverEmail)) required=true errorMessages=(hash required="Required")}}
+					<div class="layout-column flex-100 layout-align-end-end">
+						<h5 class="margin-0 color-text">* the instructions to recover your password will be sent to this email</h5>
+					</div>
+				</div>
+
+			{{/paper-dialog-content}}
+
+			{{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "showModalForgot" false)}}Cancel{{/paper-button}}
+        {{#form.submit-button primary=true}}Recover{{/form.submit-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+	{{/paper-dialog}}
+{{/if}}

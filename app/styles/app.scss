@@ -1,0 +1,55 @@
+
+$primary: "red";
+$accent: "light-green";
+$warn: "pink";
+
+
+.inner-sidenav {
+  background-color: #F2F2F2;
+   height: 100%;
+}
+
+@import 'ember-paper';
+@import 'ember-paper-stepper';
+
+.limit-height {
+  height: 400px;
+}
+
+/*
+.ember-app {
+  height: 100%;
+  width: 100%;
+}
+.container {
+  padding: 5px;
+  max-width: 864px;
+  margin: auto;
+
+
+  width: 100%;
+
+}
+
+.active { 
+  background-color: #C5CAE9;
+}
+
+.home-card {
+  max-height:400px;
+  max-width:400px;
+  float: left;
+  margin-left: 20px;
+  .md-toolbar-tools {
+    background-color: #E91E63;
+  }
+  p {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+}
+
+
+*/

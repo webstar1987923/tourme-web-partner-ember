@@ -1,0 +1,109 @@
+{{#paper-stepper
+	class=(concat "limit-height " (if vertical "" "md-whiteframe-4dp"))
+	currentStep=currentStep
+	linear=linear
+	vertical=vertical
+	alternative=alternative
+	mobileStepper=mobileStepper
+	onStepChange=(action (mut currentStep))
+	onStepperCompleted=(action (mut showCompleteDialog) true) as |stepper|}}
+
+	{{#paper-form onSubmit=(action "submitForm") as |form|}}
+
+		{{#stepper.step label="Add Tour" as |step|}}
+		  {{#step.body class="add-tour"}}
+		    <div class="layout-row layout-margin">
+		      {{form.input class="layout-column flex-33 layout-align-center-start" label="Enter Name of Tour" type="text" required=true value=model.name onChange=(action (mut model.name)) }}
+		      {{form.input class="layout-column flex-33 layout-align-center-start" label="Duration in minutes" type="number" required=true value=model.duration onChange=(action (mut model.duration))}}
+		      {{#paper-select
+		        label="Energy Level Needed"
+		        class="layout-column flex-33 layout-align-center-start"
+		        options=appConstants.enduranceList
+		        onChange=(action (mut model.endurance))
+		        selected=model.endurance
+		        as |endurance|}}
+		        {{t (concat "end_" endurance)}}
+		      {{/paper-select}}
+		    </div>
+		    <div class="layout-row layout-margin">
+		      {{form.input class="layout-column flex-33 layout-align-center-start" label="Cost" type="number" required=true value=model.cost.amount onChange=(action (mut model.cost.amount)) }}
+		      {{form.input class="layout-column flex-33 layout-align-center-start" label="Max # of People" type="number" required=true value=model.capacity onChange=(action (mut model.capacity)) }}
+		    </div>
+
+		    <div class="margin-top-xs alert-toast layout-margin">
+		      <h5 id="labelTypes" class="input-label">Mark all that applies</h5>
+		      {{partials/tour-types model=model field="tourTypes" changeAttr=changeAttr}}
+		      {{#if alertNoTypes}}
+		        {{#paper-toast duration=5000 parent="#labelTypes" swipeToClose=true onClose=(action (toggle this "alertNoTypes")) as |toast|}}
+		          {{#toast.text}}Select at least one tour type{{/toast.text}}
+		        {{/paper-toast}}
+		      {{/if}}
+		    </div>
+		  {{/step.body}}
+		  {{#step.actions as |nextStep previousStep|}}
+		    {{#paper-button onClick=(action 'cancel')}}Cancel{{/paper-button}}
+				{{#paper-button primary=true raised=true onClick=(action 'next' nextStep form.onSubmit)}}Next{{/paper-button}}
+
+		  {{/step.actions}}
+		{{/stepper.step}}
+
+		{{#stepper.step label="Details" as |step|}}
+		  {{#step.body class="add-tour"}}
+		    {{form.input class="layout-column flex layout-align-center-start" textarea=true block=true label="Short Description for Tour" type="text" required=true maxlength=150 passThru=(hash rows=1 maxRows=2) value=model.shortDesc onChange=(action (mut model.shortDesc))  }}
+		    {{form.input class="layout-column flex layout-align-center-start" textarea=true block=true label="Long Description for Tour" type="text" required=true passThru=(hash rows=2 maxRows=3)  value=model.longDesc onChange=(action (mut model.longDesc))}}
+				<div class="layout-row">
+					{{paper-switch label="Kid Friendly" class="flex" value=model.flags.kids onChange=(action (mut model.flags.kids))}}
+					{{paper-switch label="Handycap Friendly" class="flex" value=model.flags.handycap onChange=(action (mut model.flags.handycap))}}
+				</div>
+		    {{form.input class="layout-column flex layout-align-center-start" label="Extra Cost? If so, Please Enter Cost & Reason" type="text" value=model.extraCost onChange=(action (mut model.extraCost)) }}
+				<div class="margin-top-xs alert-toast">
+					<h4 id="labelTypes" class="layout-column">Available Start time Window</h4>
+					<div class="layout-row flex">
+						{{paper-time-picker
+							value=firstAvailableHour
+							class="layout-column flex layout-align-center-start z-i-100"
+							label='First Available Hour'
+							onChange=(action "setStartTime" "first")
+						}}
+						{{paper-time-picker
+							value=lastAvailableHour
+							class="layout-column flex layout-align-center-start z-i-100"
+							label='Last Available Hour'
+							onChange=(action "setStartTime" "last")
+						}}
+					</div>
+					{{paper-switch label="Car Used" class="flex" value=model.flags.carUsed onChange=(action (mut model.flags.carUsed)) }}
+					{{paper-switch label="Is this Shore Excursion Tour?" class="flex" value=model.flags.shoreExc onChange=(action (mut model.flags.shoreExc))}}
+				</div>
+		  {{/step.body}}
+			{{#step.actions as |nextStep previousStep|}}
+				{{#paper-button onClick=(action previousStep)}}Back{{/paper-button}}
+				{{#paper-button primary=true raised=true onClick=(action 'next' nextStep form.onSubmit)}}Next{{/paper-button}}
+			{{/step.actions}}
+		{{/stepper.step}}
+
+		{{#stepper.step label="Photos" as |step|}}
+		  {{#step.body class="add-tour"}}
+
+		    <div class="layout-row">
+		    <h5 id="labelTypes" class="input-label">Tour Photos</h5>
+				{{#card.content class="layout-column flex tour-info"}}
+				    <div class="layout-column">
+				      {{!--#each model.pictures as |pic|}}
+				        <div class="layout-column">
+				          {{partials/image-modal image=pic}}
+				        </div>
+				      {{/each--}}
+				    </div>
+			  	{{/card.content}}
+		    </div>
+		    {{form.input class="layout-column flex layout-align-center-start" textarea=true block=true label="Additional Info" type="text" passThru=(hash rows=4 maxRows=6) value=model.moreInfo onChange=(action (mut model.moreInfo))}}
+		  {{/step.body}}
+		  {{#step.actions as |nextStep previousStep|}}
+		    {{#paper-button onClick=(action previousStep)}}Back{{/paper-button}}
+				{{#paper-button primary=true raised=true onClick=(action 'next' nextStep form.onSubmit)}}Next{{/paper-button}}
+		  {{/step.actions}}
+		{{/stepper.step}}
+
+	{{/paper-form}}
+{{/paper-stepper}}
